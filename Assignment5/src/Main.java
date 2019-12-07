@@ -1,7 +1,7 @@
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 import java.text.SimpleDateFormat;
 
 
@@ -17,6 +17,7 @@ public class Main {
             while (currentCommand.hasNext()) {
                 commandHandler.run(currentCommand.next());
             }
+
         } catch (ParseException e) {
             System.out.println(e.getMessage());
         } catch (BadCommandException e) {

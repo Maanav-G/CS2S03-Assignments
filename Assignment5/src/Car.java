@@ -1,6 +1,7 @@
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 class Car extends Insurable {
 
@@ -12,13 +13,15 @@ class Car extends Insurable {
 
     static final String inputTag = "CAR";
 
-    Car(HashMap<String, Tag> tags) throws ParseException {
+    // Change String, Tag to String, List<Tag> in HashMap
+    // and add .get(0) to each tag to refer to the list
+    Car(HashMap<String, List<Tag>> tags) throws ParseException {
         super(tags);
-        make = tags.get("MAKE").getValue();
-        model = tags.get("MODEL").getValue();
-        plateNumber = tags.get("PLATE_NUMBER").getValue();
-        purchaseDate = Utils.convertDate(tags.get("PURCHASE_DATE").getValue());
-        mileage = Long.parseLong(tags.get("MILEAGE").getValue());
+        make = tags.get("MAKE").get(0).getValue();
+        model = tags.get("MODEL").get(0).getValue();
+        plateNumber = tags.get("PLATE_NUMBER").get(0).getValue();
+        purchaseDate = Utils.convertDate(tags.get("PURCHASE_DATE").get(0).getValue());
+        mileage = Long.parseLong(tags.get("MILEAGE").get(0).getValue());
     }
 
     public String getOwnerName() {

@@ -1,4 +1,5 @@
 class RangeCriterion {
+
     private long maxValue = Long.MAX_VALUE;
     private long minValue = Long.MIN_VALUE;
 

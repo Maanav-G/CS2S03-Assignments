@@ -7,6 +7,7 @@ class Database {
     private ArrayList<Plan> plans = new ArrayList<>();
     private ArrayList<Contract> contracts = new ArrayList<>();
     private ArrayList<Claim> claims = new ArrayList<>();
+    private ArrayList<Company> companys = new ArrayList<>();
 
     void insertHome(Home home) {
         homes.add(home);
@@ -31,6 +32,11 @@ class Database {
     void insertContract(Contract contract) {
         contracts.add(contract);
     }
+
+    void insertCompany(Company company) {
+        companys.add(company);
+    }
+
 
     Plan getPlan(String name) {
         for (Plan plan : plans) {
@@ -104,6 +110,42 @@ class Database {
             }
         }
         return totalReceived;
+    }
+
+
+    // get's wealth of a set customer
+    long getWealthOfCustomer (String customerName) {
+        // initialize wealth at 0
+        long wealth = 0;
+        // iterate through all homes and if customer name's
+        // match the owner name, add value of house to wealth
+        for (Home home : homes){
+            if (home.getOwnerName().equals(customerName)){
+                long value = home.getValue();
+                wealth += value;
+            }
+        }
+        // iterate through all cars and if customer name's
+        // match the owner name, add value of house to wealth
+        for (Car car : cars){
+            if (car.getOwnerName().equals(customerName)){
+                long value = car.getValue();
+                wealth += value;
+            }
+        }
+        // iterate through all companys and if customer name's
+        // match the owner name, add value of house to wealth
+        for (Company company : companys) {
+            if (company.getOwnerName().equals(customerName)){
+                long value = company.getValue();
+                // basically a loop that gets wealth of the name of the company
+                long subValue = getWealthOfCustomer(company.getCompanyName());
+                // add both to wealth
+                wealth += value + subValue;
+            }
+
+        }
+        return wealth;
     }
 
     Insurable getCarByPlateNumber(String insurableID) {

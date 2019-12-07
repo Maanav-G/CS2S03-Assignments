@@ -3,6 +3,8 @@ import java.util.Date;
 import java.util.HashMap;
 
 class Claim {
+    // variables for the name of contract, the amount,
+    // the date (With type Date), and if successful or not
     private String contractName;
     private long amount;
     private Date date;
@@ -10,6 +12,7 @@ class Claim {
 
     static final String inputTag = "CLAIM";
 
+    // object claim with contract name, date and amount
     Claim(HashMap<String, Tag> tags) throws ParseException {
         contractName = tags.get("CONTRACT_NAME").getValue();
         date = Utils.convertDate(tags.get("DATE").getValue());

@@ -1,16 +1,23 @@
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 class CarPlan extends Plan {
     static final String inputTag = "CAR_PLAN";
     RangeCriterion mileageCriterion = new RangeCriterion();
 
-    CarPlan(HashMap<String, Tag> tags) {
+    // Change String, Tag to String, List<Tag> in HashMap
+    // and add .get(0) to each tag to refer to the list
+    CarPlan(HashMap<String, List<Tag>> tags) {
         super(tags);
-
         if (tags.get("CAR.MILEAGE") != null) {
-            mileageCriterion.addCriterion(tags.get("CAR.MILEAGE"));
+            // for RangeCriterion, start a loop less than the size of the list
+            // that's associated with the key
+            // then get every value and add it to the respective RangeCriterion
+            for (int i = 0; i < tags.get("CAR.MILEAGE").size(); i ++){
+                mileageCriterion.addCriterion(tags.get("CAR.MILEAGE").get(i));
+            }
         }
     }
 

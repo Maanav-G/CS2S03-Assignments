@@ -1,6 +1,7 @@
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 class Claim {
     private String contractName;
@@ -11,11 +12,13 @@ class Claim {
 
     static final String inputTag = "CLAIM";
 
-    Claim(HashMap<String, Tag> tags) throws ParseException {
-        contractName = tags.get("CONTRACT_NAME").getValue();
-        InsurableID = tags.get("INSURABLE_ID").getValue();
-        date = Utils.convertDate(tags.get("DATE").getValue());
-        amount = Long.parseLong(tags.get("AMOUNT").getValue());
+    // Change String, Tag to String, List<Tag> in HashMap
+    // and add .get(0) to each tag to refer to the list
+    Claim(HashMap<String, List<Tag>> tags) throws ParseException {
+        contractName = tags.get("CONTRACT_NAME").get(0).getValue();
+        InsurableID = tags.get("INSURABLE_ID").get(0).getValue();
+        date = Utils.convertDate(tags.get("DATE").get(0).getValue());
+        amount = Long.parseLong(tags.get("AMOUNT").get(0).getValue());
     }
 
     public String getContractName() {

@@ -1,10 +1,11 @@
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
 abstract class Plan {
+    // variables for plan name, premium, max coverage per claim, the deductible
+    // and rangeCriterion for customer age, and customer income
     String name;
     long premium;
     long maxCoveragePerClaim;
@@ -12,19 +13,21 @@ abstract class Plan {
     RangeCriterion customerAgeCriterion = new RangeCriterion();
     RangeCriterion customerIncomeCriterion = new RangeCriterion();
 
+    // object Plan
     Plan(HashMap<String, Tag> tags) {
         name = tags.get("NAME").getValue();
         premium = Integer.parseInt(tags.get("PREMIUM").getValue());
         maxCoveragePerClaim = Integer.parseInt(tags.get("MAX_COVERAGE_PER_CLAIM").getValue());
         deductible = Integer.parseInt(tags.get("DEDUCTIBLE").getValue());
 
+        // if customer age does not equal null
         if (tags.get("CUSTOMER.AGE") != null) {
             customerAgeCriterion.addCriterion(tags.get("CUSTOMER.AGE"));
         }
+        // if customer income does not equal null
         if (tags.get("CUSTOMER.INCOME") != null) {
             customerIncomeCriterion.addCriterion(tags.get("CUSTOMER.INCOME"));
         }
-
     }
 
     abstract boolean isEligible(Insurable insurable, Date date);
@@ -57,5 +60,9 @@ abstract class Plan {
 
     long getDeductible() {
         return deductible;
+    }
+
+    long getAmountPayed() {
+        return 1;
     }
 }

@@ -2,9 +2,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 class InputReader {
+
+    // initialize Scanner with Variable keyboard
     private Scanner keyboard;
+    // initialize an InputReader object called instance
     private static InputReader instance = null;
+    // initialize an int called lineNumber
     private int lineNumber = 0;
+
 
     private InputReader() {
         keyboard = new Scanner(System.in);
@@ -21,35 +26,56 @@ class InputReader {
         ArrayList<Command> commands = new ArrayList<>();
         String line = "";
         lineNumber = 0;
-
+        // try the following, if there is a BadCommand Exception then catch
         try {
             while (keyboard.hasNext()) {
+                // increment line number
                 lineNumber++;
+                // input next line
                 line = keyboard.nextLine();
+                // if inputted line starts with "PRINT"
                 if (line.startsWith("PRINT ")) {
+                    // then push entire line to commands list as a print command
                     commands.add(makePrintCommand(line));
-                } else if (line.startsWith("BEGIN_")) {
+                }
+                // if inputted line starts with "BEGIN_"
+                else if (line.startsWith("BEGIN_")) {
+                    // then push entire line to commands list as a block command
                     commands.add(makeBlockCommand(line));
-                } else if (line.equals("FINISH")) {
+                }
+                // if inputted line is "FINISH"
+                else if (line.equals("FINISH")) {
+                    // end taking input
                     break;
-                } else if (!line.equals("")) {
+                }
+                // if input is  nothing
+                else if (!line.equals("")) {
+                    // print out line
                     System.out.println(line);
+                    // and throw exception
                     throw new BadCommandException("Invalid command.");
                 }
             }
-        } catch (BadCommandException e) {
+        }
+        // if a BadCommand Exception is thrown
+        catch (BadCommandException e) {
+            // then throw Bad Command Exception, with line number and message
             throw new BadCommandException("Line " + lineNumber + " : " + e.getMessage());
         }
+        // return commands
         return commands;
     }
 
     private Command makeBlockCommand(String line) {
         // Removes "BEGIN_" from the current line to get the command type;
         BlockCommand command = new BlockCommand(line.substring(6));
-
+        // wile current input has more tokens
         while (keyboard.hasNext()) {
+            // increment line number
             lineNumber ++;
+            // line equals the rest of the tokens
             line = keyboard.nextLine();
+            // if line starts and
             if (line.equals("END_" + command.getBlockType())) {
                 return command;
             } else if (line.equals("")) {
@@ -65,11 +91,17 @@ class InputReader {
     }
 
     private Command makePrintCommand(String line) {
+        // divide the line by the space, and store in String[] called tokens
         String[] tokens = line.split(" ", 5);
+        // if too many tokens (more than 4)
         if (tokens.length > 4) {
+            // throw exception
             throw new BadCommandException("Invalid print command; too many tokens.");
-        } else if (tokens.length < 4) {
-                throw new BadCommandException("Invalid print command; too few tokens.");
+        }
+        // if not enough tokens (less than 4)
+        else if (tokens.length < 4) {
+            // throw exception
+            throw new BadCommandException("Invalid print command; too few tokens.");
         }
         return new PrintCommand(tokens);
     }

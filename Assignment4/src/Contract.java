@@ -3,6 +3,8 @@ import java.util.Date;
 import java.util.HashMap;
 
 class Contract {
+    // variables for the contract name, customer name, plan name,
+    // start date (type date), end date (type date) and discount percentage
     private String contractName;
     private String customerName;
     private String planName;
@@ -12,6 +14,7 @@ class Contract {
 
     static final String inputTag = "CONTRACT";
 
+    // object contract
     Contract(HashMap<String, Tag> tags) throws ParseException {
         contractName = tags.get("CONTRACT_NAME").getValue();
         customerName = tags.get("CUSTOMER_NAME").getValue();
@@ -33,9 +36,8 @@ class Contract {
         return startDate;
     }
 
-    public Date getEndDate() {
-        return endDate;
-    }
+    public Date getEndDate() { return endDate; }
+
 
     public int getDiscountPercentage() {
         return discountPercentage;

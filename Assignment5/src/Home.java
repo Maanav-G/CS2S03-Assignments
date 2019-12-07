@@ -1,6 +1,7 @@
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 class Home extends Insurable {
     private String postalCode;
@@ -8,10 +9,12 @@ class Home extends Insurable {
 
     static final String inputTag = "HOME";
 
-    Home(HashMap<String, Tag> tags) throws ParseException {
+    // Change String, Tag to String, List<Tag> in HashMap
+    // and add .get(0) to each tag to refer to the list
+    Home(HashMap<String, List<Tag>> tags) throws ParseException {
         super(tags);
-        postalCode = tags.get("POSTAL_CODE").getValue();
-        buildDate = Utils.convertDate(tags.get("BUILD_DATE").getValue());
+        postalCode = tags.get("POSTAL_CODE").get(0).getValue();
+        buildDate = Utils.convertDate(tags.get("BUILD_DATE").get(0).getValue());
     }
 
     public String getPostalCode() {

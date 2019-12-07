@@ -1,22 +1,46 @@
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 class BlockCommand extends Command {
     private String blockType;
-    private HashMap<String, Tag> tags = new HashMap<>();
+
+    // change type of the HashMap to from String, Tags
+    // to String, List<Tag> to support duplicate keys
+    private HashMap<String, List<Tag>> tags = new HashMap<>();
 
     BlockCommand(String blockType) {
         this.blockType = blockType;
     }
 
+    // changed addTag to support Lists
     void addTag(Tag tag) {
-        tags.put(tag.getName(), tag);
+        // name of tag - key of the HashMap
+        String name = tag.getName();
+        // if current key already exists (duplicate)
+        if (tags.containsKey(name)){
+            // tokens is the List associated with that key
+            List<Tag> tokens = tags.get(name);
+            // add these values to the list with the same key
+            tokens.add(tag);
+            // push String name, and List<Tag> tokens to the hashmap
+            tags.put(name, tokens);
+        } else {
+            // otherwise do the same as above
+            // but initialize a new List for current key
+            List<Tag> tokens = new ArrayList<Tag>();
+            tokens.add(tag);
+            tags.put(name, tokens);
+        }
     }
 
     String getBlockType() {
         return blockType;
     }
+
+
 
     @Override
     void run(Database database) throws ParseException {
@@ -44,6 +68,8 @@ class BlockCommand extends Command {
             database.insertPlan(new HomePlan(tags));
         } if (blockType.equals(CarPlan.inputTag)) {
             database.insertPlan(new CarPlan(tags));
+        }if (blockType.equals(Company.inputTag)) {
+            database.insertCompany(new Company(tags));
         }
     }
 
@@ -72,9 +98,12 @@ class BlockCommand extends Command {
             return false;
 
         // If the customer was not eligible.
-        if (!plan.isEligible(customer, claim.getDate()))
+        if (!plan.isEligible(customer, claim.getDate(), database))
             return false;
 
         return plan.isEligible(insurable, claim.getDate());
     }
 }
+
+
+

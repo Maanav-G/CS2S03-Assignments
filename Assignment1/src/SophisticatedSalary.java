@@ -21,8 +21,6 @@ public class SophisticatedSalary {
         String input = keyboard.nextLine();
 
 
-        @parm weeklySalary
-
         int weeklySalary = getWeeklySalary(t, d, D, T, input);
 
         // adding the word "Dollars" to the output

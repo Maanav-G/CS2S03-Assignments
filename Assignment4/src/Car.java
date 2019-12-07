@@ -3,7 +3,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 class Car extends Insurable {
-
+    // variables for the make, model, purchase date (type Date) and mileague
     private String make;
     private String model;
     private Date purchaseDate;
@@ -11,6 +11,8 @@ class Car extends Insurable {
 
     static final String inputTag = "CAR";
 
+    // object Car, with variables from Insurable
+    // and new field variables
     Car(HashMap<String, Tag> tags) throws ParseException {
         super(tags);
         make = tags.get("MAKE").getValue();
